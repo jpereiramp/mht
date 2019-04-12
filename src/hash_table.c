@@ -12,6 +12,8 @@
 #define MHT_PRIME_A 68371
 #define MHT_PRIME_B 104729
 
+static mht_item MHT_DELETED_ITEM = {NULL, NULL};
+
 // mht_new_item
 // creates a new item to be inserted in a mht_hash_table
 // returns the newly created item.
@@ -102,7 +104,8 @@ void mht_insert(mht_hash_table* mht,
     mht_item* curr_item = mht->items[index];
     int i = 1;
 
-    while(curr_item != NULL) {
+    while(curr_item != NULL
+    && curr_item != &MHT_DELETED_ITEM) {
         index = mht_get_hash(item->key, mht->size, i);
         curr_item = mht->items[index];
         i++;
@@ -121,7 +124,8 @@ char* mht_get(mht_hash_table* mht, const char* key) {
     int i = 1;
 
     while(item != NULL) {
-        if (strcmp(item->key, key) == 0) {
+        if (strcmp(item->key, key) == 0
+        && item != &MHT_DELETED_ITEM) {
             return item->value;
         }
         index = mht_get_hash(key, mht->size, i);
@@ -131,14 +135,12 @@ char* mht_get(mht_hash_table* mht, const char* key) {
     return NULL;
 }
 
-static mht_item MHT_DELETED_ITEM = {NULL, NULL};
-
 // mht_delete(hash_table, key)
 // deletes an entry with given key from the specified hash table.
 // deleting is tricky with open addressing, therefore we don't actually
 // remove the entry, as it could possibly break a collision chain. instead,
 // we mark the entry as deleted, replacing it with a pointer to a global sentinel
-// item, which tells that bucket contains a deleted item.
+// item (MHT_DELETED_ITEM), which tells that bucket contains a deleted item.
 void mht_delete(mht_hash_table* mht, const char* key) {
     int index = mht_get_hash(key, mht->size, 0);
     mht_item* item = mht->items[index];
