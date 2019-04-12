@@ -9,6 +9,9 @@
 #include <string.h>
 #include "hash_table.h"
 
+#define MHT_PRIME_A 68371
+#define MHT_PRIME_B 104729
+
 // mht_new_item
 // creates a new item to be inserted in a mht_hash_table
 // returns the newly created item.
