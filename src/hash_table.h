@@ -10,8 +10,8 @@
 // with its key and value.
 typedef struct {
     char* key;
-    char *value;
-} ht_item;
+    char* value;
+} mht_item;
 
 // ht_hash_table
 // holds a hash table, along with its size
@@ -20,5 +20,5 @@ typedef struct {
 typedef struct {
     int size;
     int count;
-    ht_item **items;
-} ht_hash_table;
+    mht_item** items;
+} mht_hash_table;
