@@ -22,3 +22,8 @@ typedef struct {
     int count;
     mht_item** items;
 } mht_hash_table;
+
+static mht_item* mht_new_item(const char* key, const char* value);
+mht_hash_table* mht_new();
+static void mht_delete_item(mht_item* item);
+void mht_delete_hash_table(mht_hash_table* mht);
