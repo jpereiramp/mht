@@ -110,3 +110,23 @@ void mht_insert(mht_hash_table* mht,
     mht->items[index] = item;
     mht->count++;
 }
+
+// mht_get(hash_table, key)
+// searches for an entry in the given hash table
+// with the specified key.
+// returns the value of the element or NULL if nothing was found.
+char* mht_get(mht_hash_table* mht, const char* key) {
+    int index = mht_get_hash(key, mht->size, 0);
+    mht_item* item = mht->items[index];
+    int i = 1;
+
+    while(item != NULL) {
+        if (strcmp(item->key, key) == 0) {
+            return item->value;
+        }
+        index = mht_get_hash(key, mht->size, i);
+        item = mht->items[index];
+        i++;
+    }
+    return NULL;
+}
