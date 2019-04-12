@@ -74,3 +74,15 @@ static int mht_hash(const char* string,
     }
     return (int)hash;
 }
+
+// mht_get_hash
+// handles hash collisions via open addressing with double hashing.
+// we use two hash functions to calculate the index an entry should
+// be stored at after `i` collisions.
+static int mht_get_hash(const char* string, 
+                        const int buckets_count, 
+                        const int attempt_count) {
+    const int hash_a = mht_hash(string, MHT_PRIME_A, buckets_count);
+    const int hash_b = mht_hash(string, MHT_PRIME_B, buckets_count);
+    return (hash_a + (attempt_count * (hash_b + 1))) % buckets_count;
+}
