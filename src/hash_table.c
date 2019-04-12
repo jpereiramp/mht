@@ -86,3 +86,27 @@ static int mht_get_hash(const char* string,
     const int hash_b = mht_hash(string, MHT_PRIME_B, buckets_count);
     return (hash_a + (attempt_count * (hash_b + 1))) % buckets_count;
 }
+
+/**
+ * API Functions
+ **/
+
+// mht_insert(hash_table, key, value)
+// inserts a new element in the given hash table,
+// iterating through index until we find an empty bucket.
+void mht_insert(mht_hash_table* mht, 
+                const char* key,
+                const char* value) {
+    mht_item* item = mht_new_item(key, value);
+    int index = mht_get_hash(item->key, mht->size, 0);
+    mht_item* curr_item = mht->items[index];
+    int i = 1;
+
+    while(curr_item != NULL) {
+        index = mht_get_hash(item->key, mht->size, i);
+        curr_item = mht->items[index];
+        i++;
+    }
+    mht->items[index] = item;
+    mht->count++;
+}
