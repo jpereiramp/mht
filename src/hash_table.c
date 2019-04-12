@@ -52,3 +52,22 @@ void mht_delete_hash_table(mht_hash_table* mht) {
     free(mht->items);
     free(mht);
 }
+
+// mht_hash
+// private function to generate a hash given
+// the entry's value, a prime number bigger than the
+// alphabet from the entry, and the count of total buckets
+// to use.
+// returns the generated hash as integer.
+static int mht_hash(const char* string, 
+                    const int prime, 
+                    const int buckets_count) {
+    long hash = 0;
+    const int str_len = strlen(string);
+
+    for (int i = 0; i < str_len; i++) {
+        hash += (long)pow(prime, str_len - (i+1)) * string[i];
+        hash = hash % buckets_count;
+    }
+    return (int)hash;
+}
